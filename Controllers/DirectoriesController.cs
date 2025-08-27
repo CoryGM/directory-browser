@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Browser.Directories.Browse.Service;
+using Browser.Directories.Browse.Api;
 
 namespace Browser.Controllers
 {
@@ -20,7 +21,7 @@ namespace Browser.Controllers
 
         [HttpGet]
         [Route("browse")]
-        public async Task<ActionResult<DirectoryBrowserServiceResult>> BrowseAsync([FromServices] IDirectoryBrowserService browser,
+        public async Task<ActionResult<DirectoriesBrowseHttpModel>> BrowseAsync([FromServices] IDirectoryBrowserService browser,
             [FromQuery] Directories.Browse.Service.DirectoryBrowserOptions? options,
             CancellationToken cancellationToken)
         {
@@ -46,7 +47,7 @@ namespace Browser.Controllers
                 return Problem(detail: string.Join(Environment.NewLine, result.Messages),
                     statusCode: 500);
 
-            return Ok(result);
+            return Ok(new DirectoriesBrowseHttpModel(result));
         }
     }
 }

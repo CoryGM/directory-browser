@@ -42,7 +42,7 @@ namespace Browser.Directories.Browse.Service
             };
 
             var fileSearchPattern = options.SearchPattern ?? "*.*";
-            var directorySearchPattern = fileSearchPattern.Split('.')[0] + "*";
+            var directorySearchPattern = GetDirectorySearchPattern(fileSearchPattern);
             var searchOption = options.IncludeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
             if (string.IsNullOrWhiteSpace(options.BasePath))
@@ -64,8 +64,10 @@ namespace Browser.Directories.Browse.Service
             {
                 result.MatchedFiles = Directory.GetFiles(options.BasePath,
                     fileSearchPattern, searchOption);
-                result.MatchedDirectories = Directory.GetDirectories(options.BasePath,
-                    directorySearchPattern, searchOption);
+
+                if (!String.IsNullOrWhiteSpace(directorySearchPattern))
+                    result.MatchedDirectories = Directory.GetDirectories(options.BasePath,
+                        directorySearchPattern, searchOption);
             }
             catch (Exception ex)
             {
@@ -77,6 +79,18 @@ namespace Browser.Directories.Browse.Service
             }
 
             return result;
+        }
+
+        private string GetDirectorySearchPattern(string fileSearchPattern)
+        {
+            if (string.IsNullOrWhiteSpace(fileSearchPattern) ||
+                fileSearchPattern.Equals("*.*"))
+                return "*";
+
+            if (fileSearchPattern.Contains('.'))
+                return String.Empty;
+
+            return fileSearchPattern;
         }
     }
 }
