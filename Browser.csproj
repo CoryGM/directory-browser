@@ -10,4 +10,13 @@
     <None Include="wwwroot\index.html" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Files\Download\" />
+    <Folder Include="Files\Upload\" />
+  </ItemGroup>
+
 </Project>
