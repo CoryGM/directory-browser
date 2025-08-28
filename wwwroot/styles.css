@@ -1,4 +1,6 @@
-﻿/* Layout styles */
+﻿/*********************************************/
+/* Layout styles                             */
+/*********************************************/
 body {
     font-family: Tahoma, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin: 0;
@@ -9,7 +11,9 @@ body {
     padding: 0em 2em;
 }
 
-/* Navigation Bar Styles */
+/*********************************************/
+/* Navigation Bar Styles                     */
+/*********************************************/
 nav {
     background: #060572;
     padding: 1em;
@@ -44,9 +48,10 @@ nav ul li a.active {
     color: white;
     border-radius: 5px;
 }
-
-/* Global Styles */
-/* Material Design-inspired Text Input */
+/*********************************************/
+/* Global Styles                             */
+/*********************************************/
+/* Text Input */
 input[type="text"] {
     font-size: 1rem;
     padding: 0.75em 1em;
@@ -64,9 +69,9 @@ input[type="text"] {
         box-shadow: 0 2px 8px rgba(0,123,255,0.15);
     }
 
-/* Material Design-inspired Checkbox */
+/* Checkbox */
 input[type="checkbox"] {
-    accent-color: #007BFF; /* Modern browsers support accent-color */
+    accent-color: #007BFF;
     width: 1.2em;
     height: 1.2em;
     vertical-align: middle;
@@ -78,7 +83,17 @@ input[type="checkbox"] {
     margin: 0.5em;
 }
 
-/* Material Design-inspired Button */
+input[type="text"] {
+    font-size: 1rem;
+    padding: 0.5em 0.8em;
+}
+
+button {
+    padding: 0.5em 1em;
+    font-size: 0.95rem;
+}
+
+/* Button */
 button {
     font-size: 1rem;
     padding: 0.75em 1.5em;
@@ -99,7 +114,47 @@ button {
         outline: none;
     }
 
-/* Contact Information Styles */
+/* Tabs */
+.tab-header {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 0.5em;
+    gap: 0.5em;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 0.4em 1em;
+    font-size: 0.98em;
+    cursor: pointer;
+    color: #060572;
+    font-weight: 600;
+    border-radius: 6px 6px 0 0;
+    transition: background 0.2s;
+    margin-bottom: -2px;
+}
+
+    .tab-btn.active {
+        background: #fff;
+        border-bottom: 2px solid #060572;
+        color: #0056b3;
+    }
+
+    button.tab-btn:hover, button:focus {
+        background: #90b2cb;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+        outline: none;
+    }
+
+.tab-content {
+    display: block;
+    padding: 0.5em 0;
+}
+
+/*********************************************/
+/* Contact Information Page Styles           */
+/*********************************************/
 .contact-card {
     background: #f8f9fa;
     border-radius: 8px;
@@ -130,7 +185,9 @@ button {
         text-decoration: underline;
     }
 
-/* Browse Styles */
+/*********************************************/
+/* Browse Page Styles                        */
+/*********************************************/
 .browse-card {
     background: #fff;
     border-radius: 8px;
@@ -161,12 +218,14 @@ button {
     margin-top: 0.5em;
 }
 
-input[type="text"] {
-    font-size: 1rem;
-    padding: 0.5em 0.8em;
-}
-
-button {
-    padding: 0.5em 1em;
-    font-size: 0.95rem;
+.browse-tabs {
+    margin-top: 1em;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 0.5em 1.2em 0.8em 1.2em;
+    max-width: 700px;
+    min-width: 280px;
+    width: 100%;
+    box-sizing: border-box;
 }

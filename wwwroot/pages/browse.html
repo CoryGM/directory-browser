@@ -17,4 +17,15 @@
     </form>
 </div>
 
-<div id="browse-result"></div>
+<div class="browse-tabs">
+    <div class="tab-header">
+        <button class="tab-btn active" data-tab="files">Files</button>
+        <button class="tab-btn" data-tab="directories">Directories</button>
+        <button class="tab-btn" data-tab="raw-data">Raw Data</button>
+    </div>
+    <div class="tab-content" id="tab-files"></div>
+    <div class="tab-content" id="tab-directories" style="display:none;"></div>
+    <div class="tab-content" id="tab-raw-data" style="display:none;"></div>
+</div>
+
+

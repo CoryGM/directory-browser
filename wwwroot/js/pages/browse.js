@@ -31,6 +31,46 @@ function setupBrowseButtonListener() {
     });
 }
 
+function setupTabListeners() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const tab = btn.getAttribute('data-tab');
+            document.getElementById('tab-directories').style.display = tab === 'directories' ? 'block' : 'none';
+            document.getElementById('tab-files').style.display = tab === 'files' ? 'block' : 'none';
+            document.getElementById('tab-raw-data').style.display = tab === 'raw-data' ? 'block' : 'none';
+        });
+    });
+}
+
+function renderTabContent(data) {
+    // Directories
+    const dirDiv = document.getElementById('tab-directories');
+    if (Array.isArray(data.matchedDirectories)) {
+        dirDiv.innerHTML = data.matchedDirectories.length
+            ? `<ul>${data.matchedDirectories.map(d => `<li>${d}</li>`).join('')}</ul>`
+            : '<div>No directories found.</div>';
+    } else {
+        dirDiv.innerHTML = '<div>No directories found.</div>';
+    }
+
+    // Files
+    const fileDiv = document.getElementById('tab-files');
+    if (Array.isArray(data.matchedFiles)) {
+        fileDiv.innerHTML = data.matchedFiles.length
+            ? `<ul>${data.matchedFiles.map(f => `<li>${f}</li>`).join('')}</ul>`
+            : '<div>No files found.</div>';
+    } else {
+        fileDiv.innerHTML = '<div>No files found.</div>';
+    }
+
+    // Raw Data
+    const rawDataDiv = document.getElementById('tab-raw-data');
+    rawDataDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+}
+
 async function getData() {
     const queryParams = getQueryParams();
     let url = '/api/directories/browse';
@@ -46,9 +86,7 @@ async function getData() {
     const response = await fetch(url);
     const data = await response.json();
 
-    // Only update the #browse-result div
-    const resultDiv = document.getElementById('browse-result');
-    resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+    renderTabContent(data);
 }
 
 function setFormValuesAfterRender() {
@@ -67,6 +105,7 @@ function setFormValuesAfterRender() {
 
 export async function renderBrowsePage() {
     setupBrowseButtonListener();
+    setupTabListeners();
     setFormValuesAfterRender();
 
     await getData();
