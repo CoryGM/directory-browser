@@ -66,12 +66,10 @@ namespace Browser.Directories.Browse.Service
 
             try
             {
-                result.MatchedFiles = Directory.GetFiles(BrowseConfig.HomeDirectory,
-                    fileSearchPattern, searchOption).Select(x => x.Replace(BrowseConfig.HomeDirectory, String.Empty));
+                result.MatchedFiles = GetMatchedFiles(BrowseConfig.HomeDirectory, fileSearchPattern, searchOption);
 
                 if (!String.IsNullOrWhiteSpace(directorySearchPattern))
-                    result.MatchedDirectories = Directory.GetDirectories(BrowseConfig.HomeDirectory,
-                        directorySearchPattern, searchOption).Select(x => x.Replace(BrowseConfig.HomeDirectory, String.Empty));
+                    result.MatchedDirectories = GetMatchedDirectories(BrowseConfig.HomeDirectory, directorySearchPattern, searchOption);
             }
             catch (Exception ex)
             {
@@ -83,6 +81,41 @@ namespace Browser.Directories.Browse.Service
             }
 
             return result;
+        }
+
+        private static List<MatchedDirectory> GetMatchedDirectories(string path, string searchPattern, SearchOption searchOption)
+        {
+            var dirInfo = new DirectoryInfo(path);
+
+            return [.. dirInfo.GetDirectories(searchPattern, searchOption).Select(d => GetMatchedDirectory(path, d))];
+        }
+
+        private static MatchedDirectory GetMatchedDirectory(string path, DirectoryInfo dirInfo)
+        {
+            var files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
+
+            return new MatchedDirectory
+            {
+                Name = String.IsNullOrWhiteSpace(path) ?
+                        dirInfo.FullName :
+                        dirInfo.FullName.Replace(path, String.Empty),
+                SizeInBytes = files.Sum(f => f.Length),
+                FileCount = files.Length,
+            };
+        }
+
+        private static List<MatchedFile> GetMatchedFiles(string path, string searchPattern, SearchOption searchOption)
+        {
+            var dirInfo = new DirectoryInfo(path);
+
+            return [.. dirInfo.GetFiles(searchPattern, searchOption)
+                .Select(f => new MatchedFile
+                {
+                    PathName = String.IsNullOrWhiteSpace(path) ? 
+                        f.FullName : 
+                        f.FullName.Replace(path, String.Empty),
+                    SizeInBytes = f.Length
+                })];
         }
 
         private string GetDirectorySearchPattern(string fileSearchPattern)

@@ -4,14 +4,14 @@ namespace Browser.Directories.Browse.Service
 {
     public class DirectoryBrowserServiceResult : OperationResult
     {
-        private readonly List<string> _matchedFiles = [];
-        private readonly List<string> _matchedDirectories = [];
+        private readonly List<MatchedFile> _matchedFiles = [];
+        private readonly List<MatchedDirectory> _matchedDirectories = [];
 
         public string? BasePath { get; set; }
         public string? SearchPattern { get; set; }
         public bool IncludeSubdirectories { get; set; }
 
-        public IEnumerable<string> MatchedFiles 
+        public IEnumerable<MatchedFile> MatchedFiles 
         { 
             get => [.. _matchedFiles]; 
             set
@@ -23,7 +23,7 @@ namespace Browser.Directories.Browse.Service
             } 
         }
 
-        public IEnumerable<string> MatchedDirectories
+        public IEnumerable<MatchedDirectory> MatchedDirectories
         { 
             get => [.. _matchedDirectories]; 
             set
