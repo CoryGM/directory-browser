@@ -3,7 +3,7 @@
     public class MatchedFileDirectory
     {
         public string? Name { get; init; }
-        public long SizeInBytes { get; init; } = 0;
+        public string? Size { get; init; }
         public long FileCount { get; init; } = 0;
 
         private readonly List<MatchedFile> _files = [];

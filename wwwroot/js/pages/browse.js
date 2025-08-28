@@ -66,57 +66,22 @@ function renderTabContent(data) {
 }
 
 function renderFileTabHtml(data) {
-    if (!data || !Array.isArray(data.matchedFiles) || !data.matchedFiles.length)
+    if (!data || !Array.isArray(data.matchedFileDirectories) || !data.matchedFileDirectories.length)
         return '<div> No files found</div>';
-
-    let lastPath = '';
 
     let html = '<table class="browse-file-tab-table"><thead><th class="browse-file-tab-file-name-header">File Name</th><th class="browse-file-tab-file-size-header">Size</th><thead><tbody>';
 
-    data.matchedFiles.forEach((filePathName, index) => {
-        const [path, fileName] = splitPathAndFileName(filePathName);
+    data.matchedFileDirectories.forEach((matchedFileDirectory, index) => {
+        html += `<tr><td colspan="2" class="browse-file-tab-directory-cell">${matchedFileDirectory.name}</td></tr>`;
 
-        if (lastPath !== path) {
-            html += `<tr><td colspan="2" class="browse-file-tab-directory-cell">${path}</td></tr>`;
-        }
-
-        html += `<tr><td class="browse-file-tab-file-name-cell">${fileName}</td><td class="browse-file-tab-file-size-cell">TBD</td></tr>`;
-
-        lastPath = path;
+        matchedFileDirectory.files.forEach((matchedFile, fileIndex) => {
+            html += `<tr><td class="browse-file-tab-file-name-cell">${matchedFile.name}</td><td class="browse-file-tab-file-size-cell">${matchedFile.size}</td></tr>`;
+        });
     }); 
 
     html += '</tbody></table>';
 
     return html;
-}
-
-function splitPathAndFileName(filePathName) {
-    if (!filePathName)
-        return ['', ''];
-
-    let rootPath = "\\";
-
-    let lastSlash = filePathName.lastIndexOf('\\');
-    let path = '';
-
-    if (lastSlash < 0) {
-        lastSlash = filePathName.lastIndexOf('/');
-
-        if (lastSlash >= 0)
-            rootPath = "/";
-    }
-
-    if (lastSlash < 0)
-        return [rootPath, filePathName];
-
-    if (lastSlash !== 0)
-        path = filePathName.substring(0, lastSlash);
-    else
-        path = rootPath;
-
-    const fileName = filePathName.substring(lastSlash + 1);
-
-    return [path, fileName];
 }
 
 async function getData() {

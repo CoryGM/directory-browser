@@ -71,11 +71,25 @@ namespace Browser.Directories.Browse.Api
                 { 
                     Name = g.Key,
                     FileCount = g.Count(),
-                    SizeInBytes = g.Sum(f => f.SizeInBytes),
-                    Files = [.. g.Select(f => new MatchedFile(f.FileName, f.SizeInBytes))]
+                    Size = GetFileDisplaySize(g.Sum(f => f.SizeInBytes)),
+                    Files = [.. g.Select(f => new MatchedFile(f.FileName, GetFileDisplaySize(f.SizeInBytes)))]
                 });
 
             return [.. groupedFiles];
         }
+
+        private static string? GetFileDisplaySize(long? fileSize)
+        {
+            return fileSize switch
+            {
+                null => null,
+                < 0 => "Invalid size",
+                0 => "0 B",
+                < 1024 => $"{fileSize} B",
+                < 1048576 => $"{fileSize / 1024.0:F2} KB",
+                < 1073741824 => $"{fileSize / 1048576.0:F2} MB",
+                _ => $"{fileSize / 1073741824.0:F2} GB"
+            };
+    }
     }
 }
