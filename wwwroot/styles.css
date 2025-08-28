@@ -73,6 +73,11 @@ input[type="checkbox"] {
     margin-right: 0.5em;
 }
 
+.input-info {
+    font-size: small;
+    margin: 0.5em;
+}
+
 /* Material Design-inspired Button */
 button {
     font-size: 1rem;
