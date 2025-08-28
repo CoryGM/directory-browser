@@ -1,9 +1,14 @@
+using Browser.Directories.Browse;
 using Browser.Directories.Browse.Service;
 
 namespace Browser {
     public class Program {
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
+
+            var browseConfig = new BrowseConfiguration();
+            builder.Configuration.Bind("Browse", browseConfig);
+            builder.Services.AddSingleton(browseConfig);
 
             // Add services to the container.
             builder.Services.AddTransient<IDirectoryBrowserService, DirectoryBrowserService>();

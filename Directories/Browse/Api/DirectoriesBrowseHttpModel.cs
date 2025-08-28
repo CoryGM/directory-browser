@@ -6,15 +6,13 @@ namespace Browser.Directories.Browse.Api
     {
         public DirectoriesBrowseHttpModel(DirectoryBrowserServiceResult serviceResult) 
         { 
-            BasePath = serviceResult.BasePath;
-            SearchPattern = serviceResult.SearchPattern;
+            SearchTerm = serviceResult.SearchPattern;
             IncludeSubdirectories = serviceResult.IncludeSubdirectories;
             MatchedFiles = [.. serviceResult.MatchedFiles];
             MatchedDirectories = [.. serviceResult.MatchedDirectories];
         }
 
-        public string? BasePath { get; set; }
-        public string? SearchPattern { get; set; }
+        public string? SearchTerm { get; set; }
         public bool IncludeSubdirectories { get; set; }
 
         public string[] MatchedFiles { get; init; }

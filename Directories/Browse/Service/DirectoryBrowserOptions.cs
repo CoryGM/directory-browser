@@ -2,8 +2,7 @@
 {
     public class DirectoryBrowserOptions
     {
-        public string? BasePath { get; init; }
-        public string? SearchPattern { get; init; }
+        public string? SearchTerm { get; init; }
         public bool IncludeSubdirectories { get; init; }
     }
 }

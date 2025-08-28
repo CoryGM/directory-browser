@@ -1,1 +1,19 @@
-﻿<h4>Browse</h4>
+﻿<div class="browse-card">
+    <form class="browse-form" autocomplete="off" onsubmit="return false;">
+        <div class="browse-field">
+            <label for="search-term-input">Enter search term:</label>
+            <input id="search-term-input" type="text" />
+        </div>
+        <div class="browse-field">
+            <label>
+                <input id="include-subdirectories-input" type="checkbox" />
+                Include Subdirectories
+            </label>
+        </div>
+        <div class="browse-actions">
+            <button accesskey="b" id="browse-button" type="button"><u>B</u>rowse</button>
+        </div>
+    </form>
+</div>
+
+<div id="browse-result"></div>

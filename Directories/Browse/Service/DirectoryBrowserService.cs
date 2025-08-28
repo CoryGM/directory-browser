@@ -6,11 +6,15 @@ namespace Browser.Directories.Browse.Service
     {
         private readonly ILogger Logger;
         private readonly string ClassName;
+        private readonly BrowseConfiguration BrowseConfig;
 
-        public DirectoryBrowserService(ILogger<DirectoryBrowserService> logger)
+        public DirectoryBrowserService(BrowseConfiguration browseConfig,
+            ILogger<DirectoryBrowserService> logger)
         {
+            ArgumentNullException.ThrowIfNull(browseConfig);
             ArgumentNullException.ThrowIfNull(logger);
 
+            BrowseConfig = browseConfig;
             Logger = logger;
             ClassName = GetType().Name;
         }
@@ -36,23 +40,23 @@ namespace Browser.Directories.Browse.Service
         {
             var result = new DirectoryBrowserServiceResult()
             {
-                BasePath = options.BasePath,
-                SearchPattern = options.SearchPattern,
+                BasePath = BrowseConfig.HomeDirectory,
+                SearchPattern = options.SearchTerm,
                 IncludeSubdirectories = options.IncludeSubdirectories
             };
 
-            var fileSearchPattern = options.SearchPattern ?? "*.*";
+            var fileSearchPattern = options.SearchTerm ?? "*.*";
             var directorySearchPattern = GetDirectorySearchPattern(fileSearchPattern);
             var searchOption = options.IncludeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-            if (string.IsNullOrWhiteSpace(options.BasePath))
+            if (string.IsNullOrWhiteSpace(BrowseConfig.HomeDirectory))
             {
-                result.SetBadRequest("Path is null or empty.");
+                result.SetBadRequest("Home Directory is null or empty.");
 
                 return result;
             }
 
-            if (!Directory.Exists(options.BasePath))
+            if (!Directory.Exists(BrowseConfig.HomeDirectory))
             {
                 result.IsSuccess = false;
                 result.AddMessage("Directory does not exist.");
@@ -62,12 +66,12 @@ namespace Browser.Directories.Browse.Service
 
             try
             {
-                result.MatchedFiles = Directory.GetFiles(options.BasePath,
-                    fileSearchPattern, searchOption);
+                result.MatchedFiles = Directory.GetFiles(BrowseConfig.HomeDirectory,
+                    fileSearchPattern, searchOption).Select(x => x.Replace(BrowseConfig.HomeDirectory, String.Empty));
 
                 if (!String.IsNullOrWhiteSpace(directorySearchPattern))
-                    result.MatchedDirectories = Directory.GetDirectories(options.BasePath,
-                        directorySearchPattern, searchOption);
+                    result.MatchedDirectories = Directory.GetDirectories(BrowseConfig.HomeDirectory,
+                        directorySearchPattern, searchOption).Select(x => x.Replace(BrowseConfig.HomeDirectory, String.Empty));
             }
             catch (Exception ex)
             {

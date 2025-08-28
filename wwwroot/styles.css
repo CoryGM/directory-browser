@@ -1,9 +1,15 @@
-﻿body {
+﻿/* Layout styles */
+body {
     font-family: Tahoma, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
+.app-content {
+    padding: 0em 2em;
+}
+
+/* Navigation Bar Styles */
 nav {
     background: #060572;
     padding: 1em;
@@ -39,20 +45,123 @@ nav ul li a.active {
     border-radius: 5px;
 }
 
-.app-content {
-    padding: 0em 2em;
+/* Global Styles */
+/* Material Design-inspired Text Input */
+input[type="text"] {
+    font-size: 1rem;
+    padding: 0.75em 1em;
+    border: none;
+    border-radius: 4px;
+    background: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s, background 0.2s;
+    outline: none;
+    margin-right: 1em;
 }
 
-.contact-location {
-    margin-top: -1em;
+    input[type="text"]:focus {
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,123,255,0.15);
+    }
+
+/* Material Design-inspired Checkbox */
+input[type="checkbox"] {
+    accent-color: #007BFF; /* Modern browsers support accent-color */
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+/* Material Design-inspired Button */
+button {
+    font-size: 1rem;
+    padding: 0.75em 1.5em;
+    border: none;
+    border-radius: 4px;
+    background: #007BFF;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+    button:hover, button:focus {
+        background: #0056b3;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+        outline: none;
+    }
+
+/* Contact Information Styles */
+.contact-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 0.1em 2em 0.5em;
+    margin: 2em auto;
+    max-width: 500px;
+}
+
+.contact-field {
+    margin-bottom: 1em;
+    display: flex;
+    align-items: center;
 }
 
 .contact-label {
+    font-weight: 600;
+    width: 6em;
     display: inline-block;
-    width: 5em;
-    font-weight: 500;
 }
 
-.contact-content {
-    display: inline-block;
+.contact-content a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+    .contact-content a:hover {
+        text-decoration: underline;
+    }
+
+/* Browse Styles */
+.browse-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 1em 1.2em 0.8em 1.2em;
+    margin: 1em 0;
+    max-width: 500px;
+    min-width: 280px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.browse-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7em;
+}
+
+.browse-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+}
+
+.browse-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5em;
+}
+
+input[type="text"] {
+    font-size: 1rem;
+    padding: 0.5em 0.8em;
+}
+
+button {
+    padding: 0.5em 1em;
+    font-size: 0.95rem;
 }
