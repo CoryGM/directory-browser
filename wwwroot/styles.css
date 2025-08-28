@@ -1,0 +1,58 @@
+﻿body {
+    font-family: Tahoma, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background: #060572;
+    padding: 1em;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: antiquewhite;
+    padding: 10px 15px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+}
+
+nav ul li a.active {
+    background-color: #0056b3;
+    color: white;
+    border-radius: 5px;
+}
+
+.app-content {
+    padding: 0em 2em;
+}
+
+.contact-location {
+    margin-top: -1em;
+}
+
+.contact-label {
+    display: inline-block;
+    width: 5em;
+    font-weight: 500;
+}
+
+.contact-content {
+    display: inline-block;
+}
