@@ -8,6 +8,7 @@ namespace Browser.Directories.Browse.Service
         private readonly List<MatchedDirectory> _matchedDirectories = [];
 
         public string? BasePath { get; set; }
+        public string? CurrentPath { get; set; }
         public string? SearchPattern { get; set; }
         public bool IncludeSubdirectories { get; set; }
 

@@ -230,6 +230,11 @@ button {
     box-sizing: border-box;
 }
 
+.browse-file-tab-current-path {
+    color: darkblue;
+    padding-bottom: 0.5em;
+}
+
 table.browse-file-tab-table {
     width: 100%;
     font-size: small;

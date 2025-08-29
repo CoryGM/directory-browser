@@ -6,12 +6,14 @@ namespace Browser.Directories.Browse.Api
     {
         public DirectoriesBrowseHttpModel(DirectoryBrowserServiceResult serviceResult) 
         { 
+            CurrentPath = serviceResult.CurrentPath;
             SearchTerm = serviceResult.SearchPattern;
             IncludeSubdirectories = serviceResult.IncludeSubdirectories;
             MatchedFileDirectories = GetMatchedFileDirectories(serviceResult);
             MatchedDirectories = GetMatchedDirectories(serviceResult);
         }
 
+        public string? CurrentPath { get; set; }
         public string? SearchTerm { get; set; }
         public bool IncludeSubdirectories { get; set; }
 
@@ -64,7 +66,7 @@ namespace Browser.Directories.Browse.Api
                 {
                     DirectoryName = Path.GetDirectoryName(mf.PathName),
                     FileName = Path.GetFileName(mf.PathName),
-                    SizeInBytes = mf.SizeInBytes
+                    mf.SizeInBytes
                 })
                 .GroupBy(mf => mf.DirectoryName ?? string.Empty)
                 .Select(g => new MatchedFileDirectory()

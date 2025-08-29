@@ -41,13 +41,12 @@ namespace Browser.Directories.Browse.Service
             var result = new DirectoryBrowserServiceResult()
             {
                 BasePath = BrowseConfig.HomeDirectory,
+                CurrentPath = String.IsNullOrWhiteSpace(options.CurrentPath) ?
+                    $"{Path.DirectorySeparatorChar}" : 
+                    options.CurrentPath,
                 SearchPattern = options.SearchTerm,
                 IncludeSubdirectories = options.IncludeSubdirectories
             };
-
-            var fileSearchPattern = options.SearchTerm ?? "*.*";
-            var directorySearchPattern = GetDirectorySearchPattern(fileSearchPattern);
-            var searchOption = options.IncludeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
             if (string.IsNullOrWhiteSpace(BrowseConfig.HomeDirectory))
             {
@@ -56,7 +55,15 @@ namespace Browser.Directories.Browse.Service
                 return result;
             }
 
-            if (!Directory.Exists(BrowseConfig.HomeDirectory))
+            var fileSearchPattern = options.SearchTerm ?? "*.*";
+            var directorySearchPattern = GetDirectorySearchPattern(fileSearchPattern);
+            var searchOption = options.IncludeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+
+            var fullPath = String.IsNullOrWhiteSpace(options.CurrentPath) ?
+                BrowseConfig.HomeDirectory :
+                Path.Combine(BrowseConfig.HomeDirectory, options.CurrentPath.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+
+            if (!Directory.Exists(fullPath))
             {
                 result.IsSuccess = false;
                 result.AddMessage("Directory does not exist.");
@@ -66,10 +73,10 @@ namespace Browser.Directories.Browse.Service
 
             try
             {
-                result.MatchedFiles = GetMatchedFiles(BrowseConfig.HomeDirectory, fileSearchPattern, searchOption);
+                result.MatchedFiles = GetMatchedFiles(fullPath, fileSearchPattern, searchOption);
 
                 if (!String.IsNullOrWhiteSpace(directorySearchPattern))
-                    result.MatchedDirectories = GetMatchedDirectories(BrowseConfig.HomeDirectory, directorySearchPattern, searchOption);
+                    result.MatchedDirectories = GetMatchedDirectories(fullPath, directorySearchPattern, searchOption);
             }
             catch (Exception ex)
             {
