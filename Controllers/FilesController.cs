@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Browser.Directories.Browse.Service;
-using Browser.Directories.Browse.Api;
+
+using Browser.Files.Download.Service;
 
 namespace Browser.Controllers
 {
-    [Route("api/directories")]
+    [Route("api/files")]
     [ApiController]
-    public class DirectoriesController : ControllerBase
+    public class FilesController : ControllerBase
     {
         private readonly ILogger Logger;
         private readonly string ControllerName;
 
-        public DirectoriesController(ILogger<DirectoriesController> logger)
+        public FilesController(ILogger<FilesController> logger)
         {
             ArgumentNullException.ThrowIfNull(logger);
 
@@ -19,9 +19,9 @@ namespace Browser.Controllers
             ControllerName = GetType().Name;
         }
 
-        [HttpGet("browse")]
-        public async Task<ActionResult<DirectoriesBrowseHttpModel>> BrowseAsync([FromServices] IDirectoryBrowserService browser,
-            [FromQuery] Directories.Browse.Service.DirectoryBrowserOptions? options,
+        [HttpGet("download")]
+        public async Task<ActionResult<byte[]>> DownloadAsync([FromServices] IFileDownloadService download,
+            [FromQuery] FileDownloadOptions? options,
             CancellationToken cancellationToken)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
@@ -36,7 +36,7 @@ namespace Browser.Controllers
                 return Problem(detail: msg, statusCode: 400);
             }
 
-            var result = await browser.GetContentsAsync(options, cancellationToken);
+            var result = await download.GetBytesAsync(options, cancellationToken);
 
             if (result.IsBadRequest)
                 return Problem(detail: string.Join(Environment.NewLine, result.Messages),
@@ -46,7 +46,7 @@ namespace Browser.Controllers
                 return Problem(detail: string.Join(Environment.NewLine, result.Messages),
                     statusCode: 500);
 
-            return Ok(new DirectoriesBrowseHttpModel(result));
+            return File(result.FileBytes!, result.ContentType!, result.FileName);
         }
     }
 }

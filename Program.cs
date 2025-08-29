@@ -1,5 +1,6 @@
 using Browser.Directories.Browse;
 using Browser.Directories.Browse.Service;
+using Browser.Files.Download.Service;
 
 namespace Browser {
     public class Program {
@@ -12,6 +13,7 @@ namespace Browser {
 
             // Add services to the container.
             builder.Services.AddTransient<IDirectoryBrowserService, DirectoryBrowserService>();
+            builder.Services.AddTransient<IFileDownloadService, FileDownloadService>();
 
             builder.Services.AddProblemDetails();
             builder.Services.AddControllers();

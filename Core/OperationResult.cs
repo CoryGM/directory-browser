@@ -2,7 +2,7 @@
 
 namespace Browser.Core
 {
-    public class OperationResult
+    public abstract class OperationResult
     {
         public bool IsSuccess { get; set; } = true;
 

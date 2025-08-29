@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Files\Download\" />
     <Folder Include="Files\Upload\" />
   </ItemGroup>
 
