@@ -79,7 +79,7 @@ namespace Browser.Files.Download.Service
             {
                 string msg = "An error occurred while reading the file.";
                 Logger.LogError(ex, $"{ClassName}.{MethodBase.GetCurrentMethod()}: Full Path: {fullPath}, Message: {msg}");
-                result.SetException("An error occurred while reading the file. Check the log for details.");
+                result.SetException(msg);
             }
 
             return result;

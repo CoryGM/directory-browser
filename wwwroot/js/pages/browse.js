@@ -1,9 +1,12 @@
-﻿function getQueryParams() {
+﻿let uploadTargetPath = null;
+
+function getQueryParams() {
     const params = {};
     const queryString = window.location.search.substring(1);
 
     queryString.split("&").forEach(pair => {
         if (!pair) return;
+
         const [key, value] = pair.split("=");
         params[decodeURIComponent(key)] = decodeURIComponent((value || "").replace(/\+/g, " "));
     });
@@ -38,17 +41,101 @@ function setupDirectoryLinkListeners() {
         });
     });
 }
-function setupTabListeners() {
+function setupTabChangeListeners() {
     const tabButtons = document.querySelectorAll('.tab-btn');
+
     tabButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             tabButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+
             const tab = btn.getAttribute('data-tab');
+
             document.getElementById('tab-directories').style.display = tab === 'directories' ? 'block' : 'none';
             document.getElementById('tab-files').style.display = tab === 'files' ? 'block' : 'none';
             document.getElementById('tab-raw-data').style.display = tab === 'raw-data' ? 'block' : 'none';
         });
+    });
+}
+
+function setupFileTabFileUploadClickListeners() {
+    const table = document.getElementById('browse-file-tab-display-table');
+    const fileInput = document.getElementById('file-upload-input');
+
+    table.addEventListener('click', function (e) {
+        const cell = e.target.closest('td[data-target]');
+
+        if (!cell) return;
+
+        uploadTargetPath = cell.getAttribute('data-target');
+
+        fileInput.value = '';
+        fileInput.click();
+    });
+}
+
+function setupDirectoryTabFileUploadClickListeners() {
+    const table = document.getElementById('browse-directory-tab-display-table');
+    const fileInput = document.getElementById('file-upload-input');
+
+    table.addEventListener('click', function (e) {
+        const cell = e.target.closest('td[data-target]');
+
+        if (!cell) return;
+
+        uploadTargetPath = cell.getAttribute('data-target');
+
+        fileInput.value = '';
+        fileInput.click();
+    });
+}
+
+function setupFileUploadListeners() {
+    const fileInput = document.getElementById('file-upload-input');
+
+    fileInput.addEventListener('change', async function () {
+        const resultDiv = document.getElementById('browse-file-upload-result');
+        const file = fileInput.files[0];
+
+        resultDiv.className = 'browse-upload-result';
+        resultDiv.textContent = '';
+
+        if (!file || !uploadTargetPath) return;
+
+        // Client-side forbidden extension check
+        // This is just a convenience; server-side checks are still necessary
+        // and the server-side list is more extensive
+        const forbiddenExtensions = ['.exe', '.com', '.bat', '.ps1', '.sh'];
+        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+
+        if (forbiddenExtensions.includes(fileExtension)) {
+            resultDiv.textContent = "Executable files are not allowed.";
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('targetPath', uploadTargetPath);
+
+        try {
+            const response = await fetch('/api/files/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+
+            if (response.ok) {
+                resultDiv.className += ' success-text-color';
+                resultDiv.textContent = 'File upload successful';
+            } else {
+                const data = await response.json();
+                resultDiv.className += ' error-text-color';
+                resultDiv.textContent = data.detail || 'Upload failed.';
+            }
+        } catch (err) {
+            resultDiv.className += ' error-text-color';
+            resultDiv.textContent = 'Error uploading file.';
+        }
     });
 }
 
@@ -74,20 +161,13 @@ function pushStateAndGetData(currentPath) {
 }
 
 function renderTabContent(data) {
-    // Directories
-    const dirDiv = document.getElementById('tab-directories');
-
-    if (Array.isArray(data.matchedDirectories)) {
-        dirDiv.innerHTML = data.matchedDirectories.length
-            ? `<ul>${data.matchedDirectories.map(d => `<li>${d}</li>`).join('')}</ul>`
-            : '<div>No directories found.</div>';
-    } else {
-        dirDiv.innerHTML = '<div>No directories found.</div>';
-    }
-
     // Files
     const fileDiv = document.getElementById('tab-files');
     fileDiv.innerHTML = renderFileTabHtml(data);
+
+    // Directories
+    const dirDiv = document.getElementById('tab-directories');
+    dirDiv.innerHTML = renderDirectoryTabHtml(data);
 
     // Raw Data
     const rawDataDiv = document.getElementById('tab-raw-data');
@@ -109,7 +189,7 @@ function renderFileTabHtml(data) {
         return html += '<div> No files found</div>';
 
     html +=
-        `<table class="browse-file-tab-table">
+        `<table id="browse-file-tab-display-table" class="browse-file-tab-table">
             <thead>
                 <th class="browse-file-tab-file-name-header">File Name</th>
                 <th class="browse-file-tab-file-size-header">Size</th>
@@ -125,9 +205,9 @@ function renderFileTabHtml(data) {
 
         //  The first directory in the list is the current directory, so don't make it a link
         if (index === 0) {
-            html += `${matchedFileDirectory.name}`;
+            html += ` ${matchedFileDirectory.name}`;
         } else {
-            html += `<a href="#" class="browse-directory-link" data-dir="${encodeURIComponent(matchedFileDirectory.name)}">${matchedFileDirectory.name}</a>`;
+            html += ` <a href="#" class="browse-directory-link" data-dir="${encodeURIComponent(matchedFileDirectory.name)}">${matchedFileDirectory.name}</a>`;
         }
 
         html +=
@@ -135,7 +215,9 @@ function renderFileTabHtml(data) {
                 <td class="browse-file-tab-directory-size-cell">
                     ${ matchedFileDirectory.fileCount } files, ${ matchedFileDirectory.size }
                 </td>
-                <td></td>
+                <td class="browse-file-tab-file-upload-cell" data-target="${getFileUploadTarget(data.currentPath, matchedFileDirectory.name)}">
+                    <i class="fa-solid fa-upload" title="Upload a file to this location"></i>
+                </td>
             </tr >`;
 
         matchedFileDirectory.files.forEach((matchedFile, fileIndex) => {
@@ -149,7 +231,7 @@ function renderFileTabHtml(data) {
                     </td>
                     <td class="browse-file-tab-file-download-cell">
                         <a href="${getDownloadUrlForFile(data.currentPath, matchedFileDirectory.name, matchedFile)}" target="_blank" rel="noopener noreferrer" class="browse-file-tab-download-link">
-                            <i class="fa-solid fa-download"></i>
+                            <i class="fa-solid fa-download" title='Download this file'></i>
                         </a>
                     </td>
                  </tr>`;
@@ -161,12 +243,73 @@ function renderFileTabHtml(data) {
     return html;
 }
 
+function renderDirectoryTabHtml(data) {
+    let html = '';
+
+    //  Only include the current path if it's not root
+    if (data.currentPath !== '\\' && data.currentPath !== '/') {
+        html +=
+            `<div class="browse-directory-tab-current-path">
+                <i class="fa-solid fa-folder-open"></i> ${data.currentPath}
+            </div>`;
+    }
+
+    if (!data || !Array.isArray(data.matchedDirectories) || !data.matchedDirectories.length)
+        return html += '<div> No directories found</div>';
+
+    html +=
+        `<table id="browse-directory-tab-display-table" class="browse-directory-tab-table">
+            <thead>
+                <th class="browse-directory-tab-file-name-header">File Name</th>
+                <th class="browse-directory-tab-file-size-header">Size</th>
+                <th class="browse-directory-tab-file-download-header"></th>
+            <thead>
+        <tbody>`;
+
+    data.matchedFileDirectories.forEach((matchedDirectory, index) => {
+        html +=
+            `<tr>
+                <td class="browse-directory-tab-directory-name-cell">
+                    <i class="fa-solid fa-folder"></i>`;
+
+        //  The first directory in the list is the current directory, so don't make it a link
+        if (index === 0) {
+            html += ` ${matchedDirectory.name}`;
+        } else {
+            html += ` <a href="#" class="browse-directory-link" data-dir="${encodeURIComponent(matchedDirectory.name)}">${matchedDirectory.name}</a>`;
+        }
+
+        html +=
+            `</td >
+                <td class="browse-directory-tab-directory-size-cell">
+                    ${matchedDirectory.fileCount} files, ${matchedDirectory.size}
+                </td>
+                <td class="browse-directory-tab-file-upload-cell" data-target="${getFileUploadTarget(data.currentPath, matchedDirectory.name)}">
+                    <i class="fa-solid fa-upload" title="Upload a file to this location"></i>
+                </td>
+            </tr >`;
+    });
+
+    html +=
+        `	</tbody>
+		</table>`;
+
+    return html;
+}
+
 function getDownloadUrlForFile(currentPath, matchedDirectoryName, matchedFile) {
     const path = combinePaths(currentPath, matchedDirectoryName);
     const fullPath = combinePaths(path, matchedFile.name);
     const url = '/api/files/download?FilePath=' + encodeURIComponent(fullPath);
 
     return url;
+}
+
+function getFileUploadTarget(currentPath, subDirectoryName) {
+    if (!currentPath) return subDirectoryName;
+    if (!subDirectoryName) return currentPath;
+
+    return combinePaths(currentPath, subDirectoryName);
 }
 
 function combinePaths(path1, path2) {
@@ -208,18 +351,46 @@ async function getData() {
         url += `?${queryString}`;
     }
 
-    const response = await fetch(url);
-    const data = await response.json();
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-    if (!response.ok) {
-        handleProblemDetails(data);
-        return;
+        if (!response.ok) {
+            handleProblemDetails(data);
+            return;
+        }
+
+        renderTabContent(data);
+
+        setDisplayValuesAfterGetData(data);
+        setupDirectoryLinkListeners();
+        setupFileTabFileUploadClickListeners();
+        setupDirectoryTabFileUploadClickListeners();
+    } catch (err) {
+        handleException('Browse Operation Error', err);
+    }
+}
+
+function handleException(title, detail) {
+    let errorHtml = '<div>An unknown error occurred.</div>';
+
+    if (error) {
+        errorHtml =
+            `<div>
+                <h3>${title || err.name || 'Error'}</h3>
+                <div>Detail: ${detail || err.message || 'None provided.'}</div>
+                <div>Check the log for details.</div>
+            </div>`;
     }
 
-    renderTabContent(data);
+    const fileDiv = document.getElementById('tab-files');
+    const dirDiv = document.getElementById('tab-directories');
 
-    setDisplayValuesAfterGetData(data);
-    setupDirectoryLinkListeners();
+    if (fileDiv)
+        fileDiv.innerHTML = errorHtml;
+
+    if (dirDiv)
+        dirDiv.innerHTML = errorHtml;
 }
 
 function handleProblemDetails(problemDetails) {
@@ -228,10 +399,11 @@ function handleProblemDetails(problemDetails) {
     if (problemDetails) {
         errorHtml =
             `<div>
-            <h3>${problemDetails.title || 'Error'}</h3>
-            <div>Status Code: ${problemDetails.status || 'Unknown'}</div>
-            <div>Detail: ${problemDetails.detail || 'None provided by service.'}</div>
-        </div>`;
+                <h3>${problemDetails.title || 'Error'}</h3>
+                <div>Status Code: ${problemDetails.status || 'Unknown'}</div>
+                <div>Detail: ${problemDetails.detail || 'None provided by service.'}</div>
+                <div>Check the log for details.</div>
+            </div>`;
     }
 
     const fileDiv = document.getElementById('tab-files');
@@ -298,8 +470,9 @@ function setFormValuesAfterRender() {
 
 export async function renderBrowsePage() {
     setupBrowseButtonListener();
-    setupTabListeners();
+    setupTabChangeListeners();
     setFormValuesAfterRender();
+    setupFileUploadListeners();
 
     await getData();
 }

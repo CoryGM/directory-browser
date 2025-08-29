@@ -51,6 +51,14 @@ nav ul li a.active {
 /*********************************************/
 /* Global Styles                             */
 /*********************************************/
+.success-text-color {
+    color: green;
+}
+
+.error-text-color {
+    color: darkred;
+}
+
 /* Text Input */
 input[type="text"] {
     font-size: 1rem;
@@ -218,6 +226,13 @@ button {
     margin-top: 0.5em;
 }
 
+div.browse-upload-result {
+    text-align: center;
+    font-size: large;
+    max-width: 1080px;
+    min-width: 280px;
+}
+
 .browse-tabs {
     margin-top: 1em;
     background: #fff;
@@ -279,6 +294,7 @@ td.browse-file-tab-file-download-header {
 td.browse-file-tab-directory-name-cell {
     text-align: left;
     padding-left: 0.5em;
+    font-size: medium;
 }
 
 td.browse-file-tab-directory-size-cell {
@@ -299,3 +315,93 @@ td.browse-file-tab-file-size-cell {
 td.browse-file-tab-file-download-cell {
     text-align: center;
 }
+
+td.browse-file-tab-file-upload-cell {
+    text-align: center;
+    color: blue;
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+}
+
+    td.browse-file-tab-file-upload-cell:hover {
+        cursor: pointer;
+    }
+
+.browse-directory-tab-current-path {
+    color: darkblue;
+    padding-bottom: 0.5em;
+}
+
+table.browse-directory-tab-table {
+    width: 100%;
+    font-size: small;
+}
+
+.browse-directory-tab-table td,
+.browse-directory-tab-table th {
+    padding-top: 0.45em;
+    padding-bottom: 0.45em;
+}
+
+.browse-directory-tab-table tbody tr:nth-child(odd) {
+    background-color: #f5f8fa;
+}
+
+.browse-directory-tab-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+
+th.browse-directory-tab-file-name-header {
+    text-align: left;
+}
+
+th.browse-directory-tab-file-size-header {
+    text-align: right;
+    min-width: 5em;
+    max-width: 11em;
+    padding-right: 0.5em;
+}
+
+td.browse-directory-tab-file-download-header {
+    text-align: center;
+    min-width: 1.5em;
+    max-width: 1.5em;
+    padding-right: 0.5em;
+}
+
+td.browse-directory-tab-directory-name-cell {
+    text-align: left;
+    padding-left: 0.5em;
+    font-size: medium;
+}
+
+td.browse-directory-tab-directory-size-cell {
+    text-align: right;
+    padding-right: 0.5em;
+}
+
+td.browse-directory-tab-file-name-cell {
+    text-align: left;
+    padding-left: 1.5em;
+}
+
+td.browse-directory-tab-file-size-cell {
+    text-align: right;
+    padding-right: 0.5em;
+}
+
+td.browse-directory-tab-file-download-cell {
+    text-align: center;
+}
+
+td.browse-directory-tab-file-upload-cell {
+    text-align: center;
+    color: blue;
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+}
+
+    td.browse-directory-tab-file-upload-cell:hover {
+        cursor: pointer;
+    }

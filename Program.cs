@@ -1,6 +1,7 @@
 using Browser.Directories.Browse;
 using Browser.Directories.Browse.Service;
 using Browser.Files.Download.Service;
+using Browser.Files.Upload.Service;
 
 namespace Browser {
     public class Program {
@@ -14,6 +15,7 @@ namespace Browser {
             // Add services to the container.
             builder.Services.AddTransient<IDirectoryBrowserService, DirectoryBrowserService>();
             builder.Services.AddTransient<IFileDownloadService, FileDownloadService>();
+            builder.Services.AddTransient<IFileUploadService, FileUploadService>();
 
             builder.Services.AddProblemDetails();
             builder.Services.AddControllers();
@@ -26,7 +28,10 @@ namespace Browser {
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.DefaultModelsExpandDepth(-1);
+                });
             }
 
             app.UseHttpsRedirection();

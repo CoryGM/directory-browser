@@ -82,7 +82,7 @@ namespace Browser.Directories.Browse.Service
             {
                 var msg = $"Error retrieving files";
                 Logger.LogError(ex, $"{ClassName}.{MethodBase.GetCurrentMethod()}: {msg}");
-                result.SetException($"{msg}: Check the log for details.");
+                result.SetException(msg);
 
                 return result;
             }

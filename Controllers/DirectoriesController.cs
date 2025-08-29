@@ -19,7 +19,8 @@ namespace Browser.Controllers
             ControllerName = GetType().Name;
         }
 
-        [HttpGet("browse")]
+        [HttpGet]
+        [Route("browse")]
         public async Task<ActionResult<DirectoriesBrowseHttpModel>> BrowseAsync([FromServices] IDirectoryBrowserService browser,
             [FromQuery] Directories.Browse.Service.DirectoryBrowserOptions? options,
             CancellationToken cancellationToken)
