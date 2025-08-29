@@ -72,10 +72,26 @@ function renderFileTabHtml(data) {
     let html = '<table class="browse-file-tab-table"><thead><th class="browse-file-tab-file-name-header">File Name</th><th class="browse-file-tab-file-size-header">Size</th><thead><tbody>';
 
     data.matchedFileDirectories.forEach((matchedFileDirectory, index) => {
-        html += `<tr><td colspan="2" class="browse-file-tab-directory-cell">${matchedFileDirectory.name}</td></tr>`;
+        html +=
+            `<tr>
+                <td class="browse-file-tab-directory-name-cell">
+                    <i class="fa-solid fa-folder"></i> ${matchedFileDirectory.name}
+                </td >
+                <td class="browse-file-tab-directory-size-cell">
+                    ${ matchedFileDirectory.fileCount } files, ${ matchedFileDirectory.size }
+                </td>
+            </tr >`;
 
         matchedFileDirectory.files.forEach((matchedFile, fileIndex) => {
-            html += `<tr><td class="browse-file-tab-file-name-cell">${matchedFile.name}</td><td class="browse-file-tab-file-size-cell">${matchedFile.size}</td></tr>`;
+            html +=
+                `<tr>
+                    <td class="browse-file-tab-file-name-cell">
+                        <i class="fa-regular fa-file"></i> ${matchedFile.name}
+                    </td>
+                    <td class="browse-file-tab-file-size-cell">
+                        ${matchedFile.size}
+                    </td>
+                 </tr>`;
         });
     }); 
 
