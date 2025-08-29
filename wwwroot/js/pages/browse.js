@@ -211,10 +211,41 @@ async function getData() {
     const response = await fetch(url);
     const data = await response.json();
 
+    if (!response.ok) {
+        handleProblemDetails(data);
+        return;
+    }
+
     renderTabContent(data);
 
     setDisplayValuesAfterGetData(data);
     setupDirectoryLinkListeners();
+}
+
+function handleProblemDetails(problemDetails) {
+    let errorHtml = '<div>An unknown error occurred.</div>';
+
+    if (problemDetails) {
+        errorHtml =
+            `<div>
+            <h3>${problemDetails.title || 'Error'}</h3>
+            <div>Status Code: ${problemDetails.status || 'Unknown'}</div>
+            <div>Detail: ${problemDetails.detail || 'None provided by service.'}</div>
+        </div>`;
+    }
+
+    const fileDiv = document.getElementById('tab-files');
+    const dirDiv = document.getElementById('tab-directories');
+    const rawDataDiv = document.getElementById('tab-raw-data');
+
+    if (fileDiv)
+        fileDiv.innerHTML = errorHtml;
+
+    if (dirDiv)
+        dirDiv.innerHTML = errorHtml;
+
+    if (rawDataDiv && problemDetails)
+        rawDataDiv.innerHTML = `<pre>${JSON.stringify(problemDetails, null, 2)}</pre>`;
 }
 
 function setDisplayValuesAfterGetData(data) {
