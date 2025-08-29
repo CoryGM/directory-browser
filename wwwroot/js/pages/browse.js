@@ -97,6 +97,7 @@ function renderTabContent(data) {
 function renderFileTabHtml(data) {
     let html = '';
 
+    //  Only include the current path if it's not root
     if (data.currentPath !== '\\' && data.currentPath !== '/') {
         html +=
             `<div class="browse-file-tab-current-path">
@@ -112,6 +113,7 @@ function renderFileTabHtml(data) {
             <thead>
                 <th class="browse-file-tab-file-name-header">File Name</th>
                 <th class="browse-file-tab-file-size-header">Size</th>
+                <th class="browse-file-tab-file-download-header"></th>
             <thead>
         <tbody>`;
 
@@ -121,6 +123,7 @@ function renderFileTabHtml(data) {
                 <td class="browse-file-tab-directory-name-cell">
                     <i class="fa-solid fa-folder"></i>`;
 
+        //  The first directory in the list is the current directory, so don't make it a link
         if (index === 0) {
             html += `${matchedFileDirectory.name}`;
         } else {
@@ -132,6 +135,7 @@ function renderFileTabHtml(data) {
                 <td class="browse-file-tab-directory-size-cell">
                     ${ matchedFileDirectory.fileCount } files, ${ matchedFileDirectory.size }
                 </td>
+                <td></td>
             </tr >`;
 
         matchedFileDirectory.files.forEach((matchedFile, fileIndex) => {
@@ -143,6 +147,11 @@ function renderFileTabHtml(data) {
                     <td class="browse-file-tab-file-size-cell">
                         ${matchedFile.size}
                     </td>
+                    <td class="browse-file-tab-file-download-cell">
+                        <a href="${getDownloadUrlForFile(data.currentPath, matchedFileDirectory.name, matchedFile)}" target="_blank" rel="noopener noreferrer" class="browse-file-tab-download-link">
+                            <i class="fa-solid fa-download"></i>
+                        </a>
+                    </td>
                  </tr>`;
         });
     }); 
@@ -150,6 +159,42 @@ function renderFileTabHtml(data) {
     html += '</tbody></table>';
 
     return html;
+}
+
+function getDownloadUrlForFile(currentPath, matchedDirectoryName, matchedFile) {
+    const path = combinePaths(currentPath, matchedDirectoryName);
+    const fullPath = combinePaths(path, matchedFile.name);
+    const url = '/api/files/download?FilePath=' + encodeURIComponent(fullPath);
+
+    return url;
+}
+
+function combinePaths(path1, path2) {
+    if (!path1) return path2;
+    if (!path2) return path1;
+
+    let combinedPath = path1;
+    let separator = '\\';
+
+    if (path1.includes('/') || path2.includes('/')) {
+        separator = '/';
+    }
+
+    if (combinedPath.endsWith(separator)) {
+        if (path2.startsWith(separator)) {
+            combinedPath += path2.substring(1);
+        } else {
+            combinedPath += path2;
+        }
+    } else {
+        if (path2.startsWith(separator)) {
+            combinedPath += path2;
+        } else {
+            combinedPath += separator + path2;
+        }
+    }
+
+    return combinedPath;
 }
 
 async function getData() {

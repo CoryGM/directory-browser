@@ -55,7 +55,7 @@ namespace Browser.Files.Download.Service
                 return result;
             }
 
-            var fullPath = Path.GetFullPath(options.FilePath);
+            var fullPath = options.FilePath;
 
             if (!fullPath.StartsWith(BrowseConfig.HomeDirectory, StringComparison.OrdinalIgnoreCase))
                 fullPath = Path.Combine(BrowseConfig.HomeDirectory, fullPath.TrimStart(Path.DirectorySeparatorChar));

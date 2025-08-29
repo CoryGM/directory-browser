@@ -235,6 +235,10 @@ button {
     padding-bottom: 0.5em;
 }
 
+.browse-file-tab-download-link {
+
+}
+
 table.browse-file-tab-table {
     width: 100%;
     font-size: small;
@@ -265,6 +269,13 @@ th.browse-file-tab-file-size-header {
     padding-right: 0.5em;
 }
 
+td.browse-file-tab-file-download-header {
+    text-align: center;
+    min-width: 1.5em;
+    max-width: 1.5em;
+    padding-right: 0.5em;
+}
+
 td.browse-file-tab-directory-name-cell {
     text-align: left;
     padding-left: 0.5em;
@@ -283,4 +294,8 @@ td.browse-file-tab-file-name-cell {
 td.browse-file-tab-file-size-cell {
     text-align: right;
     padding-right: 0.5em;
+}
+
+td.browse-file-tab-file-download-cell {
+    text-align: center;
 }
