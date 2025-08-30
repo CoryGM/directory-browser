@@ -1,0 +1,419 @@
+﻿/*********************************************/
+/* Layout styles                             */
+/*********************************************/
+body {
+    font-family: Tahoma, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.app-content {
+    padding: 0em 2em;
+}
+
+/*********************************************/
+/* Navigation Bar Styles                     */
+/*********************************************/
+nav {
+    background: #060572;
+    padding: 1em;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: antiquewhite;
+    padding: 10px 15px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+}
+
+nav ul li a.active {
+    background-color: #0056b3;
+    color: white;
+    border-radius: 5px;
+}
+/*********************************************/
+/* Global Styles                             */
+/*********************************************/
+.success-text-color {
+    color: green;
+}
+
+.error-text-color {
+    color: darkred;
+}
+
+/* Text Input */
+input[type="text"] {
+    font-size: 1rem;
+    padding: 0.75em 1em;
+    border: none;
+    border-radius: 4px;
+    background: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s, background 0.2s;
+    outline: none;
+    margin-right: 1em;
+}
+
+    input[type="text"]:focus {
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,123,255,0.15);
+    }
+
+/* Checkbox */
+input[type="checkbox"] {
+    accent-color: #007BFF;
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+.input-info {
+    font-size: small;
+    margin: 0.5em;
+}
+
+input[type="text"] {
+    font-size: 1rem;
+    padding: 0.5em 0.8em;
+}
+
+button {
+    padding: 0.5em 1em;
+    font-size: 0.95rem;
+}
+
+/* Button */
+button {
+    font-size: 1rem;
+    padding: 0.75em 1.5em;
+    border: none;
+    border-radius: 4px;
+    background: #007BFF;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+    button:hover, button:focus {
+        background: #0056b3;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+        outline: none;
+    }
+
+    button.busy {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+/* Tabs */
+.tab-header {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 0.5em;
+    gap: 0.5em;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 0.4em 1em;
+    font-size: 0.98em;
+    cursor: pointer;
+    color: #060572;
+    font-weight: 600;
+    border-radius: 6px 6px 0 0;
+    transition: background 0.2s;
+    margin-bottom: -2px;
+}
+
+    .tab-btn.active {
+        background: #fff;
+        border-bottom: 2px solid #060572;
+        color: #0056b3;
+    }
+
+    button.tab-btn:hover, button:focus {
+        background: #90b2cb;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+        outline: none;
+    }
+
+.tab-content {
+    display: block;
+    padding: 0.5em 0;
+}
+
+/*********************************************/
+/* Contact Information Page Styles           */
+/*********************************************/
+.contact-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 0.1em 2em 0.5em;
+    margin: 2em auto;
+    max-width: 500px;
+}
+
+.contact-field {
+    margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+}
+
+.contact-label {
+    font-weight: 600;
+    width: 6em;
+    display: inline-block;
+}
+
+.contact-content a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+    .contact-content a:hover {
+        text-decoration: underline;
+    }
+
+/*********************************************/
+/* Browse Page Styles                        */
+/*********************************************/
+.browse-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 1em 1.2em 0.8em 1.2em;
+    margin: 1em 0;
+    max-width: 500px;
+    min-width: 280px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.browse-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7em;
+}
+
+.browse-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+}
+
+.browse-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5em;
+}
+
+div.browse-upload-result {
+    text-align: center;
+    font-size: large;
+    max-width: 1080px;
+    min-width: 280px;
+}
+
+.browse-tabs {
+    margin-top: 1em;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 0.5em 1.2em 0.8em 1.2em;
+    max-width: 1080px;
+    min-width: 280px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.browse-file-tab-current-path {
+    color: darkblue;
+    padding-bottom: 0.5em;
+}
+
+.browse-file-tab-download-link {
+
+}
+
+table.browse-file-tab-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: small;
+}
+
+.browse-file-tab-table td,
+.browse-file-tab-table th {
+    padding: 0.45em 0 0.45em 0;
+}
+
+.browse-file-tab-table tbody tr:nth-child(odd) {
+    background-color: #f5f8fa;
+}
+
+.browse-file-tab-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+th.browse-file-tab-file-name-header {
+    text-align: left;
+}
+
+th.browse-file-tab-file-size-header {
+    text-align: right;
+    min-width: 5em;
+    max-width: 11em;
+    padding-right: 0.5em;
+}
+
+td.browse-file-tab-file-download-header {
+    text-align: center;
+    min-width: 1.5em;
+    max-width: 1.5em;
+    padding-right: 0.5em;
+}
+
+td.browse-file-tab-directory-name-cell {
+    text-align: left;
+    padding-left: 0.5em;
+    font-size: medium;
+}
+
+td.browse-file-tab-directory-size-cell {
+    text-align: right;
+    padding-right: 0.5em;
+}
+
+td.browse-file-tab-file-name-cell {
+    text-align: left;
+    padding-left: 1.5em;
+}
+
+td.browse-file-tab-file-none-cell {
+    text-align: center;
+    font-style: italic;
+    color: gray;
+    padding: 1em;
+}
+
+td.browse-file-tab-file-size-cell {
+    text-align: right;
+    padding-right: 0.5em;
+}
+
+td.browse-file-tab-file-download-cell {
+    text-align: center;
+}
+
+td.browse-file-tab-file-upload-cell {
+    text-align: center;
+    color: blue;
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+}
+
+    td.browse-file-tab-file-upload-cell:hover {
+        cursor: pointer;
+    }
+
+.browse-directory-tab-current-path {
+    color: darkblue;
+    padding-bottom: 0.5em;
+}
+
+table.browse-directory-tab-table {
+    width: 100%;
+    font-size: small;
+}
+
+.browse-directory-tab-table td,
+.browse-directory-tab-table th {
+    padding-top: 0.45em;
+    padding-bottom: 0.45em;
+}
+
+.browse-directory-tab-table tbody tr:nth-child(odd) {
+    background-color: #f5f8fa;
+}
+
+.browse-directory-tab-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+
+th.browse-directory-tab-file-name-header {
+    text-align: left;
+}
+
+th.browse-directory-tab-file-size-header {
+    text-align: right;
+    min-width: 5em;
+    max-width: 11em;
+    padding-right: 0.5em;
+}
+
+td.browse-directory-tab-file-download-header {
+    text-align: center;
+    min-width: 1.5em;
+    max-width: 1.5em;
+    padding-right: 0.5em;
+}
+
+td.browse-directory-tab-directory-name-cell {
+    text-align: left;
+    padding-left: 0.5em;
+    font-size: medium;
+}
+
+td.browse-directory-tab-directory-size-cell {
+    text-align: right;
+    padding-right: 0.5em;
+}
+
+td.browse-directory-tab-file-name-cell {
+    text-align: left;
+    padding-left: 1.5em;
+}
+
+td.browse-directory-tab-file-size-cell {
+    text-align: right;
+    padding-right: 0.5em;
+}
+
+td.browse-directory-tab-file-download-cell {
+    text-align: center;
+}
+
+td.browse-directory-tab-file-upload-cell {
+    text-align: center;
+    color: blue;
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+}
+
+    td.browse-directory-tab-file-upload-cell:hover {
+        cursor: pointer;
+    }

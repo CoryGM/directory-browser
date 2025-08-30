@@ -1,0 +1,37 @@
+﻿<div class="browse-card">
+    <form class="browse-form" autocomplete="off" onsubmit="return false;">
+        <input id="current-path-input" type="text" hidden/>
+
+        <div class="browse-field">
+            <label for="search-term-input">Enter search term:</label>
+            <input id="search-term-input" type="text" />
+            <div class="input-info">Use * for wildcard searches</div>
+        </div>
+        <div class="browse-field">
+            <label>
+                <input id="include-subdirectories-input" type="checkbox" />
+                Include Subdirectories
+            </label>
+        </div>
+        <div class="browse-actions">
+            <button accesskey="b" id="browse-button" type="button"><u>B</u>rowse</button>
+        </div>
+    </form>
+</div>
+
+<div id="browse-file-upload-result" class="browse-upload-result">&nbsp;</div>
+
+<div class="browse-tabs">
+    <div class="tab-header">
+        <button class="tab-btn active" data-tab="files">Files</button>
+        <button class="tab-btn" data-tab="directories">Directories</button>
+        <button class="tab-btn" data-tab="raw-data">Raw Data</button>
+    </div>
+    <div class="tab-content" id="tab-files"></div>
+    <div class="tab-content" id="tab-directories" style="display:none;"></div>
+    <div class="tab-content" id="tab-raw-data" style="display:none;"></div>
+</div>
+
+<input type="file" id="file-upload-input" hidden />
+
+
