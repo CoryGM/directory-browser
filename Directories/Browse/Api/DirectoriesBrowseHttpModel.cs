@@ -1,7 +1,4 @@
 ﻿using Browser.Directories.Browse.Service;
-using System;
-using System.Collections.Immutable;
-using System.Security.Cryptography.Xml;
 
 namespace Browser.Directories.Browse.Api
 {
@@ -66,7 +63,7 @@ namespace Browser.Directories.Browse.Api
 
             var matchedDirectoryNames = serviceResult.MatchedFiles
                 .Select(mf => Path.GetDirectoryName(mf.PathName) ?? String.Empty)
-                .Where(d => !string.IsNullOrEmpty(d))
+                .Where(d => !String.IsNullOrEmpty(d))
                 .Distinct()
                 .ToArray();
 
@@ -135,6 +132,6 @@ namespace Browser.Directories.Browse.Api
                 < 1073741824 => $"{fileSize / 1048576.0:F2} MB",
                 _ => $"{fileSize / 1073741824.0:F2} GB"
             };
-    }
+        }
     }
 }
